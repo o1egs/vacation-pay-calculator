@@ -33,7 +33,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         return vacationPay(averageSalary, finalDayCount);
     }
 
-    private int vacationPay(Integer averageSalary, Integer dayCount) {
+    int vacationPay(Integer averageSalary, Integer dayCount) {
         return (int) ((averageSalary / 29.4) * dayCount);
     }
 
@@ -42,7 +42,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         if (dayCount < 0) throw new CaculatorException("Day count < 0");
     }
 
-    private boolean isHoliday(LocalDate date) {
+    boolean isHoliday(LocalDate date) {
         int day = date.getDayOfMonth();
         Month month = date.getMonth();
         for (Holidays holiday : Holidays.values()) {
@@ -55,7 +55,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         return false;
     }
 
-    private boolean isWeekend(LocalDate date) {
+    boolean isWeekend(LocalDate date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek.equals(SUNDAY) || dayOfWeek.equals(SATURDAY);
     }
