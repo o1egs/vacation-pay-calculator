@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class CalculatorController {
     private final CalculatorService calculatorService;
 
-    @GetMapping("/calculate")
+    @GetMapping("/calculacte")
     public ResponseEntity<Integer> calculate(@RequestParam Integer averageSalary,
                                              @RequestParam Integer dayCount,
                                              @RequestParam(required = false) LocalDate startDate) throws CaculatorException {
