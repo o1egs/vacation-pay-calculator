@@ -1,6 +1,7 @@
 package ru.shtyrev.vacationpaycalculator.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class CalculatorController {
     @GetMapping("/calculacte")
     public ResponseEntity<Integer> calculate(@RequestParam Integer averageSalary,
                                              @RequestParam Integer dayCount,
-                                             @RequestParam(required = false) LocalDate startDate) throws CaculatorException {
+                                             @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate startDate) throws CaculatorException {
         Integer vacationPay = calculatorService.calculate(averageSalary, dayCount, startDate);
         return new ResponseEntity<>(vacationPay, HttpStatus.OK);
     }

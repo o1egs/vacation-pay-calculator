@@ -1,18 +1,17 @@
 package ru.shtyrev.vacationpaycalculator.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.shtyrev.vacationpaycalculator.exception.CaculatorException;
-import ru.shtyrev.vacationpaycalculator.holidays.Holidays;
 import ru.shtyrev.vacationpaycalculator.service.CalculatorService;
+import ru.shtyrev.vacationpaycalculator.service.CheckDaysUtil;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
-
-import static java.time.DayOfWeek.*;
 
 @Service
+@RequiredArgsConstructor
 public class CalculatorServiceImpl implements CalculatorService {
+    private final CheckDaysUtil checkDaysUtil;
     @Override
     public Integer calculate(Integer averageSalary, Integer dayCount, LocalDate startDate) throws CaculatorException {
         validate(averageSalary, dayCount);
@@ -25,7 +24,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         int days = dayCount;
 
         while (days > 0) {
-            boolean flag = isHoliday(date) || isWeekend(date);
+            boolean flag = checkDaysUtil.isHoliday(date) || checkDaysUtil.isWeekend(date);
             finalDayCount = flag ? finalDayCount - 1 : finalDayCount;
             date = date.plusDays(1);
             days--;
@@ -40,23 +39,5 @@ public class CalculatorServiceImpl implements CalculatorService {
     private void validate(Integer averageSalary, Integer dayCount) throws CaculatorException {
         if (averageSalary < 0) throw new CaculatorException("Salary < 0");
         if (dayCount < 0) throw new CaculatorException("Day count < 0");
-    }
-
-    boolean isHoliday(LocalDate date) {
-        int day = date.getDayOfMonth();
-        Month month = date.getMonth();
-        for (Holidays holiday : Holidays.values()) {
-            Integer holidayDay = holiday.getDay();
-            Month holidayMonth = holiday.getMonth();
-            if (holidayDay.equals(day) && holidayMonth.equals(month)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    boolean isWeekend(LocalDate date) {
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
-        return dayOfWeek.equals(SUNDAY) || dayOfWeek.equals(SATURDAY);
     }
 }
